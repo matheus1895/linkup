@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:linkup/models/user_model.dart';
+import 'package:linkup/data/models/user_model.dart';
 import 'package:linkup/ui/core/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -10,17 +10,22 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final usernameController = TextEditingController();
 
     var authViewModel = Provider.of<AuthViewModel>(context);
 
     void _register() async {
-      await authViewModel.registerUser(UserModel(email: emailController.text, password: passwordController.text));  
+      await authViewModel.registerUser(
+        UserModel(
+          email: emailController.text,
+          username: usernameController.text,
+          password: passwordController.text,
+        ),
+      );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('LinkUp - Registro'),
-      ),
+      appBar: AppBar(title: const Text('LinkUp - Registro')),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
@@ -45,6 +50,15 @@ class RegisterPage extends StatelessWidget {
 
                 const SizedBox(height: 15),
                 TextField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nome de Usuário',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+                TextField(
                   controller: passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Senha',
@@ -57,10 +71,10 @@ class RegisterPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     try {
-                    _register();
-                    Navigator.pushReplacementNamed(context, '/feed');
+                      _register();
+                      Navigator.pushReplacementNamed(context, '/feed');
                     } catch (e) {
-                    debugPrint(e.toString());  
+                      debugPrint(e.toString());
                     }
                   },
                   child: const Text('Registrar'),
@@ -80,7 +94,4 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
-
-    
-
 }

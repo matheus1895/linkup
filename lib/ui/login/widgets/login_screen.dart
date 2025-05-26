@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:linkup/models/user_model.dart';
+import 'package:linkup/data/models/user_model.dart';
 import 'package:linkup/ui/core/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +19,7 @@ class LoginPage extends StatelessWidget {
       await authViewModel.loginUser(
         UserModel(
           email: emailController.text,
+          username: "",
           password: passwordController.text
         )
       );      
