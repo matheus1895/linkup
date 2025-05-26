@@ -1,27 +1,31 @@
 class UserModel {
-  final String id;
-  final String username;
+  String? id;
+  String? username;
   final String email;
+  final String password;
   
-  final String? profileImageUrl;
+  String? profileImageUrl;
   final String? bio;
   final List<String>? followers;
   final List<String>? following;
 
-  UserModel({
-    required this.id, 
-    required this.username, 
-    required this.email, 
-    required this.profileImageUrl, 
-    required this.bio, 
-    required this.followers, 
-    required this.following
+  UserModel(
+    {
+    required this.email,
+    required this.password,
+    this.id,
+    this.username, 
+    this.profileImageUrl, 
+    this.bio, 
+    this.followers, 
+    this.following
   });
 
   UserModel.fromMap(Map<String, dynamic> map)
       : id = map['id'],
         username = map['username'],
         email = map['email'],
+        password = map['password'],
         profileImageUrl = map['profileImageUrl'],
         bio = map['bio'],
         followers = List<String>.from(map['followers']),
@@ -32,6 +36,7 @@ class UserModel {
       'id': id,
       'username': username,
       'email': email,
+      'password': password,
       'profileImageUrl': profileImageUrl,
       'bio': bio,
       'followers': followers,

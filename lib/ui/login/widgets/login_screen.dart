@@ -1,12 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:linkup/models/user_model.dart';
+import 'package:linkup/ui/core/view_models/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    
+    var authViewModel = Provider.of<AuthViewModel>(context);
+
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    void _login() async {
+      await authViewModel.loginUser(
+        UserModel(
+          email: emailController.text,
+          password: passwordController.text
+        )
+      );      
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -24,6 +40,7 @@ class LoginPage extends StatelessWidget {
                   'Bem-vindo ao LinkUp!',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
@@ -32,6 +49,7 @@ class LoginPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                 ),
+
                 const SizedBox(height: 15),
                 TextField(
                   controller: passwordController,
@@ -41,13 +59,18 @@ class LoginPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
+
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/feed');
+                    _login();
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      Navigator.pushReplacementNamed(context, '/feed');
+                    }
                   },
                   child: const Text('Entrar'),
                 ),
+
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {

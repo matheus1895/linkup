@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:linkup/models/user_model.dart';
+import 'package:linkup/ui/core/view_models/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -7,6 +10,12 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+
+    var authViewModel = Provider.of<AuthViewModel>(context);
+
+    void _register() async {
+      await authViewModel.registerUser(UserModel(email: emailController.text, password: passwordController.text));  
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -24,6 +33,7 @@ class RegisterPage extends StatelessWidget {
                   'Criar uma conta',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
+
                 const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
@@ -32,6 +42,7 @@ class RegisterPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                   ),
                 ),
+
                 const SizedBox(height: 15),
                 TextField(
                   controller: passwordController,
@@ -41,13 +52,20 @@ class RegisterPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
+
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
+                    try {
+                    _register();
                     Navigator.pushReplacementNamed(context, '/feed');
+                    } catch (e) {
+                    debugPrint(e.toString());  
+                    }
                   },
                   child: const Text('Registrar'),
                 ),
+
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
@@ -62,4 +80,7 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
+
+    
+
 }
