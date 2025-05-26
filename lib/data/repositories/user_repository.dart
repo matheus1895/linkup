@@ -8,18 +8,20 @@ class UserRepository {
 
   saveUser(UserModel user) async {
     try {
-      await usersCollection.doc().set(user.toMap());
+      await usersCollection.doc(user.id.toString()).set(user.toMap());
     } catch (e) {
       debugPrint(e.toString()); 
     }
   }
 
-  getUserById(String id) async {
-    var user = usersCollection.where(
-      id, 
-      isEqualTo: id
-    );
-    return user;
+  Future<UserModel> getUserById(String id) async {
+    var users = [];
+    await usersCollection.where("id", isEqualTo: id).get().then((val) {
+      for (var user in val.docs) {
+        var newUser = UserModel.fromMap(user.data());
+        users.add(newUser);
+      }
+    });
+    return users.first;
   }
-
 }

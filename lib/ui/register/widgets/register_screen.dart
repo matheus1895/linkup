@@ -72,7 +72,7 @@ class RegisterPage extends StatelessWidget {
                   onPressed: () {
                     try {
                       _register();
-                      Navigator.pushReplacementNamed(context, '/feed');
+                      Navigator.pushReplacementNamed(context, '/login');
                     } catch (e) {
                       debugPrint(e.toString());
                     }
