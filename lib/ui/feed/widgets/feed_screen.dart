@@ -97,7 +97,6 @@ class _FeedPageState extends State<FeedPage> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return Post(postModel: snapshot.data![index]);
-                      // return Placeholder(child: Text("Image not found..."));
                   },
                 );
               } else {

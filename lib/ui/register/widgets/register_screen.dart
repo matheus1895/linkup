@@ -3,9 +3,15 @@ import 'package:linkup/data/models/user_model.dart';
 import 'package:linkup/ui/core/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  bool rememberMe = false;
   @override
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
@@ -20,6 +26,7 @@ class RegisterPage extends StatelessWidget {
           email: emailController.text,
           username: usernameController.text,
           password: passwordController.text,
+          rememberMe: rememberMe,
         ),
       );
     }
@@ -66,6 +73,14 @@ class RegisterPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
+
+                Checkbox(value: rememberMe, onChanged: (val) {
+                  setState(() {
+                      rememberMe = val!;
+                  });
+                  
+                }, activeColor: Colors.deepPurple),
+                Text("Remember me"),
 
                 const SizedBox(height: 20),
                 ElevatedButton(

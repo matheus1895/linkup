@@ -4,6 +4,7 @@ class UserModel {
   final String email;
   final String password;
   
+  bool? rememberMe;
   String? profileImageUrl;
   String? bio;
 
@@ -11,7 +12,8 @@ class UserModel {
     {
     required this.email,
     required this.password,
-    required this.username, 
+    required this.username,
+    this.rememberMe, 
     this.id,
     this.profileImageUrl, 
     this.bio, 
@@ -23,7 +25,8 @@ class UserModel {
         email = map['email'],
         password = map['password'],
         profileImageUrl = map['profileImageUrl'],
-        bio = map['bio'];
+        bio = map['bio'],
+        rememberMe = map['rememberMe'];
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,6 +36,7 @@ class UserModel {
       'password': password,
       'profileImageUrl': profileImageUrl,
       'bio': bio,
+      'rememberMe': rememberMe
     };
   }
 }

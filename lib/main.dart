@@ -12,31 +12,36 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
+    options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => ThemeViewModel()),
-      ChangeNotifierProvider(create: (_) => AuthViewModel()),
-    ],
-    child: LinkUpApp(),
-  ));
+
+  final authViewModel = AuthViewModel();
+  final isLoggedIn = await authViewModel.isUserLoggedIn();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeViewModel()),
+        ChangeNotifierProvider(create: (_) => authViewModel),
+      ],
+      child: LinkUpApp(initialRoute: isLoggedIn ? '/feed' : '/login'),
+    ),
+  );
 }
 
 class LinkUpApp extends StatelessWidget {
-  const LinkUpApp({super.key});
+  final String initialRoute;
+
+  const LinkUpApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
-  
-  var themeViewModel = Provider.of<ThemeViewModel>(context);
-  var authViewModel = Provider.of<AuthViewModel>(context);
-
-  return MaterialApp(
+    var themeViewModel = Provider.of<ThemeViewModel>(context);
+    return MaterialApp(
       title: 'LinkUp',
       debugShowCheckedModeBanner: false,
       theme: themeViewModel.theme,
-      initialRoute: '/login',
+      initialRoute: initialRoute,
       routes: {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
